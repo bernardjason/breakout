@@ -22,6 +22,7 @@ class BreakoutGame extends LoopTrait {
   override def firstScreenSetup(): Unit = {
     CurrentGame.reset
     GameKeyboard.reset
+    Sound.reset
 
     stage = new Stage(new ScreenViewport()) // GameScreen.cam))
 
@@ -67,7 +68,9 @@ class BreakoutGame extends LoopTrait {
 
     CurrentGame.deltaTime = Gdx.graphics.getDeltaTime
 
-    if (!CurrentGame.okToPlayNow) Sound.playStarting
+    if (!CurrentGame.okToPlayNow) {
+      Sound.playStarting
+    }
 
     CurrentGame.render()
 

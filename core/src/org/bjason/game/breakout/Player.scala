@@ -10,7 +10,7 @@ import org.bjason.game.{CareAboutKeyboard, GameKeyboard}
 class Player(startx: Int, starty: Int) extends Actor with MyCollision with CareAboutKeyboard {
 
   val size = 96
-  val XY = 300
+  val XY = 400
 
   val sizey = size / 8
   val sizex = size
@@ -62,32 +62,30 @@ class Player(startx: Int, starty: Int) extends Actor with MyCollision with CareA
     if (getX <= size || getX >= Gdx.graphics.getWidth-size) {
       setX(getX - by)
     }
-    //GameScreen.cam.rotate(by, 0, 0, 1)
   }
 
 
-  var onceEvery = 0f
 
   override def fire(): Unit = {
-    if (onceEvery >= 0) {
-      onceEvery = -30
-      val b = Ball(getX.toInt , getY.toInt + sizey)
+    if (CurrentGame.ballReadyToFire) {
+      CurrentGame.ballFired
+      val b = new Ball(getX.toInt , getY.toInt + sizey)
       CurrentGame.addActor(b)
     }
   }
 
 
   override def draw(batch: Batch, parentAlpha: Float) {
-    onceEvery = onceEvery +parentAlpha
     polygon.setPosition(getX, getY)
 
-    batch.draw(texture, getX-sizex, getY-sizey)
-
+    batch.draw(texture, getX - sizex, getY - sizey)
+    if (CurrentGame.ballReadyToFire) {
+      batch.draw(Ball.texture,getX-Ball.size , getY+Ball.size )
+    }
   }
 
-  override def dispose(): Unit = {
+  def dispose(): Unit = {
     texture.dispose()
   }
 
 }
-

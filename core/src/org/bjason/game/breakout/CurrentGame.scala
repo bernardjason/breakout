@@ -10,9 +10,19 @@ import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 
 object CurrentGame {
 
+  def render(): Unit = {
+    countDownToPlaySeconds=countDownToPlaySeconds+Gdx.graphics.getDeltaTime
+  }
+
+
   var hashCounter = 1
   val canBeHitActors: ListBuffer[Actor with MyCollision] = new ListBuffer[Actor with MyCollision]()
   val bricks: ListBuffer[Actor with MyCollision] = new ListBuffer[Actor with MyCollision]()
+  var countDownToPlaySeconds = 0f
+
+  def okToPlayNow = {
+     countDownToPlaySeconds > 0
+  }
 
 
   def getHashCounter = {
@@ -24,16 +34,20 @@ object CurrentGame {
   private val toAdd = new ArrayBuffer[Actor]()
   lazy val font = getFont(20)
   var score = 0
-  var lives = 0
-  val LIVES = 3
+  var balls = 0
+  val BALLS = 3
   var difficult = 1
+  var ballReadyToFire = true
+
+  def ballFired = {
+    ballReadyToFire = false
+  }
 
   def addActor(a: Actor) {
     a match {
       case b: PrizeBrick =>
         canBeHitActors += b
       case b: Brick =>
-        //canBeHitActors += b
         bricks += b
       case m: MyCollision => canBeHitActors += m
       case _ =>
@@ -75,8 +89,10 @@ object CurrentGame {
     toAdd.clear()
     toRemove.clear()
     score = 0
-    lives = LIVES
+    balls = BALLS
     difficult = 1
+    countDownToPlaySeconds = -2
+    ballReadyToFire = true
   }
 
   def getFont(size: Int) = {

@@ -4,18 +4,18 @@ import com.badlogic.gdx.Gdx
 
 object Sound {
 
-  lazy private val warn = Gdx.audio.newMusic(Gdx.files.internal("data/warning.wav"))
-  lazy private val fire = Gdx.audio.newMusic(Gdx.files.internal("data/fire.wav"))
-  lazy private val explode = Gdx.audio.newMusic(Gdx.files.internal("data/explode.wav"))
+  lazy private val ping = Gdx.audio.newMusic(Gdx.files.internal("data/ping.wav"))
+  lazy private val powerup = Gdx.audio.newMusic(Gdx.files.internal("data/powerup.wav"))
+  lazy private val starting = Gdx.audio.newMusic(Gdx.files.internal("data/starting.wav"))
 
-  def playFire  {
-    fire.play()
+  def playPing: Unit = {
+    ping.play()
   }
-  def playExplode {
-    explode.play()
+  def playPowerup: Unit = {
+    powerup.play()
   }
-  def playWarning: Unit = {
-    warn.play()
+  def playStarting: Unit = {
+    if ( ! starting.isPlaying ) starting.play()
   }
 }
 

@@ -1,6 +1,7 @@
 package org.bjason.game
 
 import com.badlogic.gdx.{Input, InputAdapter}
+import org.bjason.game.breakout.CurrentGame
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -24,32 +25,34 @@ object GameKeyboard extends InputAdapter {
   }
 
   def render(): Unit = {
-    for(l <- listeners) {
-      if ( shift_left ) l.forward()
-      if ( left ) l.left()
-      if ( right ) l.right()
-      if ( fire ) l.fire()
+    if (CurrentGame.okToPlayNow) {
+      for (l <- listeners) {
+        if (shift_left) l.forward()
+        if (left) l.left()
+        if (right) l.right()
+        if (fire) l.fire()
+      }
     }
   }
 
-  def change(keyCode:Int,to:Boolean): Unit = {
-    if ( keyCode == Input.Keys.SHIFT_LEFT) shift_left=to
-    if ( keyCode == Input.Keys.LEFT) left=to
-    if ( keyCode == Input.Keys.RIGHT) right=to
-    if ( keyCode == Input.Keys.SPACE) fire=to
-    if ( keyCode == Input.Keys.ESCAPE) escape = to
+  def change(keyCode: Int, to: Boolean): Unit = {
+    if (keyCode == Input.Keys.SHIFT_LEFT) shift_left = to
+    if (keyCode == Input.Keys.LEFT) left = to
+    if (keyCode == Input.Keys.RIGHT) right = to
+    if (keyCode == Input.Keys.SPACE) fire = to
+    if (keyCode == Input.Keys.ESCAPE) escape = to
 
   }
 
-  override def keyDown(keyCode:Int):Boolean = {
+  override def keyDown(keyCode: Int): Boolean = {
     super.keyDown(keyCode)
-    change(keyCode,true)
+    change(keyCode, true)
     true
   }
 
   override def keyUp(keyCode: Int): Boolean = {
     super.keyUp(keyCode)
-    change(keyCode,false)
+    change(keyCode, false)
     true
   }
 }

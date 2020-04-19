@@ -11,6 +11,7 @@ abstract class Brick extends Actor with MyCollision {
   override def onHit(by: Actor): Unit = {
     super.onHit(by)
     CurrentGame.removeActor(this)
+    Sound.playPing
   }
 
   override def draw(batch: Batch, parentAlpha: Float): Unit = {

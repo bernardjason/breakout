@@ -36,8 +36,8 @@ class EndScreen extends LoopTrait {
     Gdx.gl.glClearColor(0.5f, 0, 0, 1)
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
     batch.begin()
-    batch.draw(score, 20, 350)
-    batch.draw(value, 20, 0)
+    batch.draw(score, 64, 300)
+    batch.draw(value, 64, 0)
     batch.end()
   }
 

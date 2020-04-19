@@ -20,20 +20,20 @@ object Ball {
   val points: Array[Float] = Array[Float](
     -size, -size,
     0, size,
-    size, -size
+    size,-size
   )
 
 }
 class Ball(startx: Int, starty: Int) extends Actor with MyCollision {
   val dir = new Vector2(0, 1)
-  val speed = ((CurrentGame.difficult+1) * 9) /3
+  val speed = 400 + ((CurrentGame.difficult) * 100)
 
   override val points: Array[Float] = Ball.points
 
   setPosition(startx, starty)
 
   override def draw(batch: Batch, parentAlpha: Float): Unit = {
-    setPosition(getX + dir.x * speed * parentAlpha, getY + dir.y * speed * parentAlpha)
+    setPosition(getX + dir.x * speed * CurrentGame.deltaTime, getY + dir.y * speed * CurrentGame.deltaTime)
     polygon.setPosition(getX, getY)
     val x = getX
     val y = getY

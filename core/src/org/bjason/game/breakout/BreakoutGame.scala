@@ -39,7 +39,7 @@ class BreakoutGame extends LoopTrait {
     var level = 1
     var rows = 6
     var yy = (Gdx.graphics.getHeight * 0.75f).toInt
-    while (rows > 0 && yy >= Gdx.graphics.getHeight/2) {
+    while (rows > 0 && yy >= Gdx.graphics.getHeight / 2) {
       for (xx <- BasicBrick.sizex * 2 to Gdx.graphics.getWidth - BasicBrick.sizex * 2 by BasicBrick.sizex * 2 + 3) {
         val random = (Math.random() * 1000).toInt % 10
         val b = if (random < 7) {
@@ -49,80 +49,82 @@ class BreakoutGame extends LoopTrait {
         }
         CurrentGame.addActor(b)
       }
-      yy = yy - BasicBrick.sizey*2
-      rows = rows -1
+      yy = yy - BasicBrick.sizey * 2
+      rows = rows - 1
     }
     level = level + 1
   }
 
 
-override def create (): Unit = {
-  Gdx.input.setInputProcessor (GameKeyboard)
-  firstScreenSetup ()
-}
+  override def create(): Unit = {
+    Gdx.input.setInputProcessor(GameKeyboard)
+    firstScreenSetup()
+  }
 
-  override def render (): Unit = {
-  Gdx.gl.glClearColor (0, 0.0f, 0, 1)
-  Gdx.gl.glClear (GL20.GL_COLOR_BUFFER_BIT)
+  override def render(): Unit = {
+    Gdx.gl.glClearColor(0, 0.0f, 0, 1)
+    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
-  if (! CurrentGame.okToPlayNow) Sound.playStarting
+    CurrentGame.deltaTime = Gdx.graphics.getDeltaTime
 
-  CurrentGame.render ()
+    if (!CurrentGame.okToPlayNow) Sound.playStarting
 
-
-  GameKeyboard.render ()
-
-  textBatch.begin ()
-  CurrentGame.font.draw (textBatch,
-  "Score " + CurrentGame.score + " balls " + CurrentGame.balls + " level=" + CurrentGame.difficult +
-  " fps=" + Gdx.graphics.getFramesPerSecond, 0, Gdx.graphics.getHeight - 5)
-  textBatch.end ()
-
-  batch.begin ()
-  stage.draw ()
-  batch.end ()
-
-  CollisionDetection.checkPlayerAgainst (player, CurrentGame.canBeHitActors)
-  val balls = CurrentGame.canBeHitActors.filter (_.isInstanceOf[Ball] )
-  if (balls.length == 0) {
-  CurrentGame.ballReadyToFire = true
-} else {
-  CollisionDetection.checkCollision (balls, CurrentGame.bricks)
-}
-  if (CurrentGame.bricks.length <= 0) {
-  CurrentGame.bricks.map (CurrentGame.removeActor (_) )
-  CurrentGame.difficult = CurrentGame.difficult + 1
-  addTheBricks
-}
-  println (CurrentGame.bricks.length)
-
-  CurrentGame.doAddAndRemove (stage)
-
-  if (CurrentGame.balls <= 0 || GameKeyboard.escape == true) {
-  clearUp ()
-  this.screenComplete = true
-}
-
-}
+    CurrentGame.render()
 
 
-  def clearUp () = {
-  for (a <- CurrentGame.canBeHitActors) {
-  a.dispose ()
-}
-  player.dispose ()
-  stage.dispose ()
-}
+    GameKeyboard.render()
+
+    textBatch.begin()
+    CurrentGame.font.draw(textBatch,
+      "Score " + CurrentGame.score + " balls " + CurrentGame.balls + " level=" + CurrentGame.difficult +
+        " fps=" + Gdx.graphics.getFramesPerSecond, 0, Gdx.graphics.getHeight - 5)
+    textBatch.end()
+
+    batch.begin()
+    stage.draw()
+    batch.end()
+
+    CollisionDetection.checkPlayerAgainst(player, CurrentGame.canBeHitActors)
+    val balls = CurrentGame.canBeHitActors.filter(_.isInstanceOf[Ball])
+    if (balls.length == 0) {
+      CurrentGame.ballReadyToFire = true
+    } else {
+      CurrentGame.ballReadyToFire = false
+      CollisionDetection.checkCollision(balls, CurrentGame.bricks)
+    }
+    if (CurrentGame.bricks.length <= 0) {
+      CurrentGame.bricks.map(CurrentGame.removeActor(_))
+      CurrentGame.difficult = CurrentGame.difficult + 1
+      addTheBricks
+    }
+
+    CurrentGame.doAddAndRemove(stage)
+
+    if (CurrentGame.balls <= 0 || GameKeyboard.escape == true) {
+      clearUp()
+      this.screenComplete = true
+    }
+
+  }
 
 
-  override def dispose (): Unit = {
-  stage.dispose ()
-}
+  def clearUp() = {
+    for (a <- CurrentGame.canBeHitActors) {
+      a.dispose()
+    }
+    player.dispose()
+    stage.dispose()
+  }
 
-  override def resize (width: Int, height: Int): Unit = {
-  super.resize (width, height)
-  stage.getViewport.update (width, height, true)
-}
+
+  override def dispose(): Unit = {
+    stage.dispose()
+  }
+
+  override def resize(width: Int, height: Int): Unit = {
+    super.resize(width, height)
+    stage.getViewport.update(width, height, true)
+  }
 }
 
 

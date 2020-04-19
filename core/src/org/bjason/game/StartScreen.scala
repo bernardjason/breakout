@@ -13,11 +13,12 @@ class StartScreen extends LoopTrait {
     new Texture(ascii.getPixmapForString("BERNIESOFT", 1280, bernSoftHeight, Color.RED)),
     new Texture(ascii.getPixmapForString("BERNIESOFT", 1280, bernSoftHeight, Color.BLUE)),
   )
+  lazy val title =new Texture(ascii.getPixmapForString("Breakout", 1280, bernSoftHeight, Color.CYAN))
 
   val backgroundColour = Color.BLACK //new Color(0,0,0.3f,1)
 
   lazy val instructions = ascii.getRegularTextAsTexture(
-    "         arrow keys rotate, space fire, left shift thrust\n\n        radar shows location of asteroids\n\n        GOOD LUCK!!", 1024, 400, backgroundColour)
+    "         arrow keys \n\n        space to release ball\n\n        GOOD LUCK!!", 1024, 400, backgroundColour)
   lazy val keys = new Texture(Gdx.files.internal("data/keys.png"))
   var mainTitleShow = 0f
   var mainTitley = 0f
@@ -54,16 +55,17 @@ class StartScreen extends LoopTrait {
       batch.draw(t, 0, y)
       y = y + bernSoftHeight
     }
-    batch.draw(keys, Gdx.graphics.getWidth / 2 - instructions.getWidth / 2 - keys.getWidth, instructionsy)
-    batch.draw(instructions, Gdx.graphics.getWidth / 2 - instructions.getWidth / 2, instructionsy)
+    batch.draw(title, 100, instructionsy+200)
+    batch.draw(keys, Gdx.graphics.getWidth / 2 - instructions.getWidth / 2 - keys.getWidth, instructionsy-100)
+    batch.draw(instructions, Gdx.graphics.getWidth / 2 - instructions.getWidth / 2, instructionsy-100)
     batch.end()
 
     mainTitleShow = mainTitleShow + Gdx.graphics.getDeltaTime
-    val speed = Gdx.graphics.getDeltaTime * 80
+    val speed = Gdx.graphics.getRawDeltaTime * 80
 
     if (mainTitleShow > SHOW_MAIN_TITLE) {
       mainTitley = mainTitley + speed
-      if (instructionsy <= 0) {
+     if (instructionsy <= Gdx.graphics.getHeight*0.3f) {
         instructionsy = instructionsy + speed
       }
     }

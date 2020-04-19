@@ -32,7 +32,7 @@ object PrizeBrick {
 class PrizeBrick(startx: Int, starty: Int) extends Actor with MyCollision {
 
   override val points: Array[Float] = PrizeBrick.points
-  val speed = 5
+  val speed = 200 + ((CurrentGame.difficult) * 50)
   var notPickedUp = true
 
   protected val texture = PrizeBrick.texture
@@ -48,23 +48,27 @@ class PrizeBrick(startx: Int, starty: Int) extends Actor with MyCollision {
       Sound.playPowerup
       CurrentGame.score = CurrentGame.score + 10
       CurrentGame.balls = CurrentGame.balls + 1
-      if ( Math.random() * 1000 > 500 ) {
+      if (Math.random() * 1000 > 500) {
         CurrentGame.balls = CurrentGame.balls + 1
-        val b = new Ball(getX.toInt , getY.toInt  + PrizeBrick.sizey)
+        val b = new Ball(getX.toInt, getY.toInt + PrizeBrick.sizey+5)
         CurrentGame.addActor(b)
       }
     }
   }
 
   override def draw(batch: Batch, parentAlpha: Float): Unit = {
-    setY(getY - speed * parentAlpha)
-    polygon.setPosition(getX, getY)
-    val y = getY
-    batch.draw(texture, getX - PrizeBrick.sizex, getY - PrizeBrick.sizey)
 
-    if (y <= PrizeBrick.sizey) {
-      CurrentGame.removeActor(this)
-    }
+    //if (getY > 160) {
+
+      setY(getY - speed * CurrentGame.deltaTime)
+      polygon.setPosition(getX, getY)
+      val y = getY
+      if (y <= PrizeBrick.sizey) {
+        CurrentGame.removeActor(this)
+      }
+    //}
+
+    batch.draw(texture, getX - PrizeBrick.sizex, getY - PrizeBrick.sizey)
   }
 
   override def dispose(): Unit = {

@@ -38,6 +38,7 @@ object CurrentGame {
   val BALLS = 3
   var difficult = 1
   var ballReadyToFire = true
+  var deltaTime = 0f
 
   def ballFired = {
     ballReadyToFire = false
@@ -91,7 +92,7 @@ object CurrentGame {
     score = 0
     balls = BALLS
     difficult = 1
-    countDownToPlaySeconds = -2
+    countDownToPlaySeconds = -1.5f
     ballReadyToFire = true
   }
 

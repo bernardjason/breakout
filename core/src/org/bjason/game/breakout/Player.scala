@@ -10,7 +10,7 @@ import org.bjason.game.{CareAboutKeyboard, GameKeyboard}
 class Player(startx: Int, starty: Int) extends Actor with MyCollision with CareAboutKeyboard {
 
   val size = 96
-  val XY = 400
+  val XY = 600
 
   val sizey = size / 8
   val sizex = size
@@ -69,7 +69,7 @@ class Player(startx: Int, starty: Int) extends Actor with MyCollision with CareA
   override def fire(): Unit = {
     if (CurrentGame.ballReadyToFire) {
       CurrentGame.ballFired
-      val b = new Ball(getX.toInt , getY.toInt + sizey)
+      val b = new Ball(getX.toInt , getY.toInt + sizey+5)
       CurrentGame.addActor(b)
     }
   }

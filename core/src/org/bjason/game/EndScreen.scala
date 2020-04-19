@@ -33,7 +33,7 @@ class EndScreen extends LoopTrait {
     if ( Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
       System.exit(0)
     }
-    Gdx.gl.glClearColor(0.5f, 0, 0, 1)
+    Gdx.gl.glClearColor(0.15f, 0, 0, 1)
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
     batch.begin()
     batch.draw(score, 64, 300)
